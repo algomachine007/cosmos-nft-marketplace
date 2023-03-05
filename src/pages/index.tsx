@@ -1,7 +1,6 @@
-import { Inter } from "next/font/google";
+import axios from "axios";
+import getStripe from "../../utils/get-stripe";
 import cosmosData from "./../../lib/cosmos";
-
-const inter = Inter({ subsets: ["latin"] });
 
 type TData = {
   objects: {
@@ -11,8 +10,58 @@ type TData = {
   }[];
 };
 
+const cartItems = {
+  price: "price_1MiDVfDMW3TinYJTrXL8d1Nd",
+  quantity: 2,
+};
+
+function Checkout({ cart }: any) {
+  const handleCheckout = async () => {
+    try {
+      const stripe = await getStripe();
+
+      const checkoutSession = await axios.post("/api/checkout_sessions", {
+        cart,
+      });
+
+      const result = await stripe?.redirectToCheckout({
+        sessionId: checkoutSession.data.id,
+      });
+
+      console.log("Checkout session", checkoutSession);
+      console.log("result", result);
+
+      if (result?.error) {
+        alert(result.error.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return (
+    <div>
+      <form
+        action="/api/checkout_sessions"
+        onSubmit={handleCheckout}
+        method="post"
+      >
+        <label htmlFor="">Checkout</label>
+        <button type="submit" style={{ padding: 15, cursor: "pointer" }}>
+          Checkout
+        </button>
+      </form>
+
+      <button
+        onClick={handleCheckout}
+        style={{ padding: 15, cursor: "pointer" }}
+      >
+        Checkout
+      </button>
+    </div>
+  );
+}
+
 export default function Home({ data }: { data: TData }) {
-  console.log(data);
   return (
     <div
       style={{
@@ -33,6 +82,8 @@ export default function Home({ data }: { data: TData }) {
           />
         </div>
       ))}
+
+      <Checkout cart={cartItems} />
     </div>
   );
 }
