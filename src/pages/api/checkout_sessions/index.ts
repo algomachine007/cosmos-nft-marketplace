@@ -22,7 +22,11 @@ export default async function handler(
         const stripeHost = "checkout.stripe.com";
         const stripe_url = new URL(session.url).hostname;
         if (session.url && stripeHost === stripe_url) {
-          res.redirect(303, String(session.url));
+          // res.redirect(303, String(session.url));
+
+          // Create Checkout Sessions from body params.
+
+          res.status(200).json(session);
         }
       }
     } catch (err) {

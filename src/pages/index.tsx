@@ -24,15 +24,16 @@ function Checkout({ cart }: any) {
         cart,
       });
 
-      const result = await stripe?.redirectToCheckout({
-        sessionId: checkoutSession.data.id,
-      });
+      alert(JSON.stringify(checkoutSession.data.url));
 
-      console.log("Checkout session", checkoutSession);
-      console.log("result", result);
+      if (checkoutSession.data.url) {
+        const result = await stripe?.redirectToCheckout({
+          sessionId: checkoutSession.data.id,
+        });
 
-      if (result?.error) {
-        alert(result.error.message);
+        if (result?.error) {
+          alert(result.error.message);
+        }
       }
     } catch (error) {
       console.log(error);
