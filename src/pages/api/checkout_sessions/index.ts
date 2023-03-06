@@ -15,17 +15,13 @@ export default async function handler(
           payment_method_types: ["card"],
           line_items: [cart],
           mode: "payment",
-          success_url: `http://localhost:3000/?success=true`,
-          cancel_url: `http://localhost:3000/?canceled=true`,
+          success_url: `${req.headers.origin}/?success=true`,
+          cancel_url: `${req.headers.origin}/?canceled=true`,
         });
 
         const stripeHost = "checkout.stripe.com";
         const stripe_url = new URL(session.url).hostname;
         if (session.url && stripeHost === stripe_url) {
-          // res.redirect(303, String(session.url));
-
-          // Create Checkout Sessions from body params.
-
           res.status(200).json(session);
         }
       }

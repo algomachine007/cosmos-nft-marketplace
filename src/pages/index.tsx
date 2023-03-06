@@ -48,7 +48,7 @@ function Checkout({ cart }: any) {
       >
         <label htmlFor="">Checkout</label>
         <button type="submit" style={{ padding: 15, cursor: "pointer" }}>
-          Checkout
+          Checkout Option 1
         </button>
       </form>
 
@@ -56,7 +56,7 @@ function Checkout({ cart }: any) {
         onClick={handleCheckout}
         style={{ padding: 15, cursor: "pointer" }}
       >
-        Checkout
+        Checkout Option 2
       </button>
     </div>
   );
