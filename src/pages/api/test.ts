@@ -6,7 +6,7 @@ export default async function handler(req: any, res: any) {
     try {
       sgMail.setApiKey(process.env.SENDGRID_API_KEY ?? "");
       const msg = {
-        to: "benneth@bejamas.io",
+        to: "uzochukwubenamara@gmail.com",
         from: "benneth@bejamas.io",
         subject: "Sending with Twilio SendGrid is Fun",
         text: "and easy to do anywhere, even with Node.js",
