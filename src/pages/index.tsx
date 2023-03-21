@@ -1,4 +1,6 @@
 import axios from "axios";
+import Admin from "../../components/User/Admin";
+import Paid from "../../components/User/Paid";
 import getStripe from "../../utils/get-stripe";
 import cosmosData from "./../../lib/cosmos";
 
@@ -63,6 +65,30 @@ function Checkout({ cart }: any) {
 }
 
 export default function Home({ data }: { data: TData }) {
+  // create type contract early
+
+  type TDatum = {
+    id: string;
+    name: string;
+    type: "paid" | "admin";
+  };
+
+  // coming from api
+  const datum: TDatum = {
+    id: "007",
+    name: "algomachine",
+    type: "admin",
+  };
+
+  // type === "admin" // 2 variants, not gonna change
+  // create the bridge
+  const User = {
+    paid: Paid(),
+    admin: Admin,
+  };
+
+  const Component = User[datum.type];
+
   return (
     <div
       style={{
@@ -85,6 +111,8 @@ export default function Home({ data }: { data: TData }) {
       ))}
 
       <Checkout cart={cartItems} />
+
+      <div>{typeof Component === "function" ? <Component /> : Component}</div>
     </div>
   );
 }
